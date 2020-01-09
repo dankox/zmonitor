@@ -1,0 +1,26 @@
+{
+  "name": "zmonitor",
+  "version": "0.0.1",
+  "description": "zMonitor tool for monitoring z/OS applications",
+  "main": "lib/index.js",
+  "bin": {
+    "zmonitor": "./lib/index.js"
+  },
+  "scripts": {
+    "build": "tsc --pretty",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "dankox",
+  "license": "MIT",
+  "dependencies": {
+    "terminal-kit": "^1.32.2",
+    "typescript": "^3.7.4"
+  },
+  "devDependencies": {
+    "@types/node": "^13.1.4",
+    "@types/terminal-kit": "^1.28.0",
+    "ts-lint": "^4.5.1",
+    "ts-node": "^8.5.4",
+    "tslint": "^5.20.1"
+  }
+}
