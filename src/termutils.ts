@@ -50,8 +50,18 @@ export class Screen {
 		bgColor: 0
 	};
 
+	static readonly aBGreen: ScreenBuffer.Attributes = {
+		color: Screen.ansiColorIndex.brightGreen,
+		bgColor: 0
+	};
+
 	static readonly aBYellow: ScreenBuffer.Attributes = {
 		color: Screen.ansiColorIndex.brightYellow,
+		bgColor: 0
+	};
+
+	static readonly aBRed: ScreenBuffer.Attributes = {
+		color: Screen.ansiColorIndex.brightRed,
 		bgColor: 0
 	};
 
@@ -274,15 +284,35 @@ export class Screen {
 		}
 	}
 
-	putIn(text: string, color?: ScreenBuffer.Attributes) {
+	putIn(text: string, color?: ScreenBuffer.Attributes, fromTop: boolean = false) {
 		let cellX = 0;
 		if (this.hasBorder) cellX = 1;
 		let cellY = 0;
-		if (this.hasBorder) cellY = 1;
+		let maxRows = this.height;
+		if (this.hasBorder) {
+			cellY = 1;
+			maxRows -= 2;
+		}
 		let attr = this.screenPos.attr;
 		if (color) attr = color;
 
-		this.put(text.substr(0, this.colsWidth), { x: cellX, y: cellY, attr: attr });
+		let lines: string[] = text.split('\n');
+		if (fromTop) {
+			lines = lines.slice(0, maxRows);
+		} else {
+			const start = Math.max(lines.length - maxRows - 1, 0);
+			lines = lines.slice(start);
+		}
+
+		for (const line of lines) {
+			// highlighting
+			if (line.toLowerCase().indexOf('danko') > -1) {
+				this.put(line.substr(0, this.colsWidth), { x: cellX, y: cellY, attr: Screen.aBRed });
+			} else {
+				this.put(line.substr(0, this.colsWidth), { x: cellX, y: cellY, attr: attr });
+			}
+			cellY++;
+		}
 	}
 
 	put(text: string, options?: PutOpts) {
